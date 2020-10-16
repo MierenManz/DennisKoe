@@ -1,0 +1,16 @@
+{
+  "name": "denniskoe-api",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "run": "tsc && cd dist && node index.js"
+  },
+  "author": "Roelof Noort & Christiaan van Boheemen",
+  "license": "SEE LICENSE IN license",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1"
+  }
+}
