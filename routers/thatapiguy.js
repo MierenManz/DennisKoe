@@ -1,6 +1,7 @@
 // import { Context } from "https://deno.land/x/abc@v1.1.0/mod.ts";
 // import type { Group } from "https://deno.land/x/abc@v1.1.0/mod.ts";
 import { logger } from "../utils/logger.js";
+import { tracker } from '../utils/tracker.js';
 
 const keys = JSON.parse(Deno.readTextFileSync('./keys.json'));
 
@@ -17,7 +18,7 @@ export default function (router) {
         }
         logger.debug('Dog took: ' + (new Date().getTime() - start) + "ms");
         return body.json();
-    });
+    }, tracker);
     router.get("/catto", async(c) => {
         let start = new Date().getTime();
         let body;
@@ -29,5 +30,5 @@ export default function (router) {
         }
         logger.debug('Cat took: ' + (new Date().getTime() - start) + "ms");
         return body.json();
-    });
+    }, tracker);
 }
