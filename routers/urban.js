@@ -1,6 +1,7 @@
 // import { Context } from "https://deno.land/x/abc@v1.1.0/mod.ts";
 // import type { Group } from "https://deno.land/x/abc@v1.1.0/mod.ts";
 import { logger } from "../utils/logger.js";
+import { tracker } from '../utils/tracker.js';
 
 export default function (router) {
     router.get('/:word', async(c) => {
@@ -15,5 +16,5 @@ export default function (router) {
             author: body.list[0].author,
             date: body.list[0].written_on
         };
-    });
+    }, tracker);
 }
