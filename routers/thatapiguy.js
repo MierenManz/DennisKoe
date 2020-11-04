@@ -7,7 +7,7 @@ const keys = JSON.parse(Deno.readTextFileSync('./keys.json'));
 
 
 export default function (router) {
-    router.get("/doggo", async(c) => {
+    router.get("/dog", async(c) => {
         let start = new Date().getTime();
         let body;
         try {
@@ -16,10 +16,10 @@ export default function (router) {
             logger.error(e);
             return { error: "DogAPI is offline"};
         }
-        logger.debug('Dog took: ' + (new Date().getTime() - start) + "ms");
+        logger.debug('thatapiguy/dog took: ' + (new Date().getTime() - start) + "ms");
         return body.json();
     }, tracker);
-    router.get("/catto", async(c) => {
+    router.get("/cat", async(c) => {
         let start = new Date().getTime();
         let body;
         try {
@@ -28,7 +28,7 @@ export default function (router) {
             logger.error(e);
             return { error: "CatAPI is offline"};
         }
-        logger.debug('Cat took: ' + (new Date().getTime() - start) + "ms");
+        logger.debug('thatapiguy/cat took: ' + (new Date().getTime() - start) + "ms");
         return body.json();
     }, tracker);
 }
