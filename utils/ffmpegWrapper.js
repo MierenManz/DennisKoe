@@ -1,3 +1,7 @@
+/**\
+* Written & Maintained by only Christiaan 'MierenMans' van Boheemen
+* Property of Christiaan van Boheemen
+*/
 import EventsEmitter from "https://deno.land/std@0.76.0/node/events.ts";
 import * as path from "https://deno.land/std@0.76.0/path/mod.ts";
 
