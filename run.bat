@@ -1,0 +1,1 @@
+deno run --allow-read=config.json,keys.json --allow-net=0.0.0.0:6969,api.thecatapi.com,api.thedogapi.com,api.urbandictionary.com mod.js
