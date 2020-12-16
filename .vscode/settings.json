@@ -1,0 +1,29 @@
+{
+    "psi-header.templates": [
+    
+        {
+            "language" : "*",
+            "template": [
+                "",
+                "       :::::::::  ",
+                "      :+:    :+:  ",
+                "     +:+    +:+  ",
+                "    +#+    +:+   ",
+                "   +#+    +#+    ",
+                "  #+#    #+#     ",
+                " #########   enniskoe",
+                "",
+                " <<filename>>",
+                "",
+                " This file belongs to Denniskoe",
+                " Dit bestand behoort tot Denniskoe",
+                "",
+            ],
+        }
+
+    ],
+    "psi-header.changes-tracking": {
+        "isActive": true,
+        "autoHeader": "manualSave"
+    }
+}
