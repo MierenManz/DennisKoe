@@ -1,3 +1,20 @@
+/*
+ * 
+ *        :::::::::  
+ *       :+:    :+:  
+ *      +:+    +:+  
+ *     +#+    +:+   
+ *    +#+    +#+    
+ *   #+#    #+#     
+ *  #########   enniskoe
+ * 
+ *  mod.js
+ * 
+ *  This file belongs to Denniskoe
+ *  Dit bestand behoort tot Denniskoe
+ * 
+ */
+
 import { Application, Context } from "https://deno.land/x/abc@v1.2.0/mod.ts";
 import { logger } from "./utils/logger.js";
 const app = new Application();
