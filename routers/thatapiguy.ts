@@ -14,37 +14,18 @@
  *  Dit bestand behoort tot Denniskoe
  * 
  */
-interface Keys {
-    [cat: string]: string,
-    dog: string
-}
 
-interface Catergories {
-    id?: number,
-    name?: string
-}
-interface Body {
-    breeds: string[],
-    categories?: Catergories[],
-    id: string,
-    url: string,
-    width: number
-    height: number
-}
-interface ContextWithParams extends Context {
-    params: {
-        test: string,
-        id: string
-    }
-}
 // import all features
-import { Context, Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
-import { tracker } from "../utils/tracker.ts";
+import { Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
+import {Keys, ContextWithParams, Body} from "../utils/types.ts";
+
 // read keys for request
 const keys:Keys = await JSON.parse(await Deno.readTextFile('./keys.json'))
+
 // create new router
 const router = new Router({prefix: "/tag"})
 
+// router for ThatApiGuy (TAG)
 router.get('/:id', async (ctx:ContextWithParams) => {
     const api: string = ctx.params.id.substr(0, 3);
     if (api === "cat" || api === "dog") {
