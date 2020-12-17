@@ -39,6 +39,6 @@ app.use(async (ctx:Context, next) => {
 //add all routers
 app.use(thatApiGuy.routes());
 app.use(thatApiGuy.allowedMethods());
-
+//test commit
 //start server
 await app.listen({ port: config.port });
