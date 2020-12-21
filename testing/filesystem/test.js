@@ -2,12 +2,14 @@ import { FileSystem } from "../../utils/filesystem.ts";
 
 Deno.test({
     name: 'FS FileExist',
+    //only: true,
     fn: FE
-})
+});
 Deno.test({
     name: 'FS FileExistSync',
+    //only: true,
     fn: FES
-})
+});
 Deno.chdir(Deno.cwd() + "\\testing\\filesystem");
 
 async function FE() {
