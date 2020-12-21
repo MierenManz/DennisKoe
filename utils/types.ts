@@ -20,12 +20,12 @@ import { Context } from "https://deno.land/x/oak@v6.4.0/mod.ts";
 export interface ServerConfig {
     port: number
 }
-export interface Keys {
+export interface ApiKeys {
     [cat: string]: string,
     dog: string
 }
 
-export interface Catergories {
+interface Catergories {
     id?: number,
     name?: string
 }
@@ -34,12 +34,24 @@ export interface Body {
     categories?: Catergories[],
     id: string,
     url: string,
-    width: number
+    width: number,
     height: number
 }
-export interface ContextWithParams extends Context {
+export interface TagContext extends Context {
     params: {
         test: string,
         id: string
+    }
+}
+export interface FfmpegSettings {
+    ffmpegDir?: string;
+    niceness?: number;
+    fatalError?: boolean;
+    source?: string;
+}
+export interface CrabboContext extends Context {
+    params: {
+        uppertext: string,
+        bottomtext: string
     }
 }
