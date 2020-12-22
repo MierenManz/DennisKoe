@@ -29,7 +29,7 @@ const router = new Router({prefix: "/tag"})
 router.get('/:id', async (ctx:TagContext) => {
     const api: string = ctx.params.id.substr(0, 3);
     if (api === "cat" || api === "dog") {
-        let body: Body = await (await fetch(`https://api.the${api}api.com/v1/images/search?api_key=${keys[api]}`)).json();
+        const body: Body = await (await fetch(`https://api.the${api}api.com/v1/images/search?api_key=${keys[api]}`)).json();
         ctx.response.body = body;
     }
     return;
