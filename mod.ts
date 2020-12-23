@@ -20,7 +20,7 @@ import { Application, Context } from "https://deno.land/x/oak@v6.4.0/mod.ts";
 import { tracker } from "./utils/tracker.ts";
 import { ServerConfig } from "./utils/types.ts";
 
-//read config
+// Read ServerConfig
 const config:ServerConfig = await JSON.parse(await Deno.readTextFile('./config.json'));
 
 //import all routers
@@ -33,8 +33,9 @@ const app = new Application();
 
 // add tracker
 app.use(async (ctx:Context, next) => {
+    if (String(ctx.request.url).includes('favicon') === false) tracker(ctx);
     await next();
-    return tracker(ctx);
+    return;
 });
 
 //add all routers
@@ -44,4 +45,4 @@ app.use(customRouter.routes());
 app.use(customRouter.allowedMethods());
 
 //start server
-await app.listen({ port: config.port });
+await app.listen({ port: config.server.port });
