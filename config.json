@@ -1,3 +1,6 @@
 {
-    "port": 6969
+    "server": {
+        "port": 6969,
+        "isProduction": true
+    }
 }
