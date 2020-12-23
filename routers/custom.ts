@@ -16,13 +16,14 @@
  */
 
 // import all types & classes
-import { Router, send } from "https://deno.land/x/oak@v6.4.0/mod.ts";
+import { Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
 import ffmpeg from "https://deno.land/x/deno_ffmpeg@1.2.2/mod.ts";
-import { CrabboContext, FfmpegSettings } from "../utils/types.ts";
-import { FileSystem } from '../utils/filesystem.ts'
+import { CrabboContext, FfmpegSettings, ServerConfig } from "../utils/types.ts";
+import { fileExist } from '../utils/filesystem.ts'
+import { logger } from "../utils/logger.ts";
 
-// Cache for crabbo mp4's
-const crabboCacheRoot = `${Deno.cwd()}\\temp\\crabbovids\\`
+// Cache Directory for crabbo mp4's
+const crabboCacheRoot = `${Deno.cwd()}\\cache\\crabbovids\\`
 
 // FfmpegSettings
 const crabboSettings:FfmpegSettings = {
@@ -31,6 +32,9 @@ const crabboSettings:FfmpegSettings = {
     source: "./assets/crabbo/crab.mp4"
 }
 
+// Read ServerConfig
+const config: ServerConfig = await JSON.parse( await Deno.readTextFile('./config.json'));
+
 // VideoRender instance for crabbo
 const crabboFfmpegInstance = ffmpeg(crabboSettings);
 
@@ -38,16 +42,61 @@ const crabboFfmpegInstance = ffmpeg(crabboSettings);
 const router = new Router({prefix: "/custom", methods: ["GET", "POST"]})
 
 
-router.get('/crabbo/:uppertext/:bottomtext', async (ctx:CrabboContext) => {
+router.get('/crabbo/:uppertext/:bottomtext', async(ctx:CrabboContext) => {
+    const begin: number = Date.now();
     ctx.response.status = 200;
     const filename = `${ctx.params.uppertext},${ctx.params.bottomtext}.mp4`;
-    if (await FileSystem.fileExist(crabboCacheRoot+filename) === false) {
-        crabboFfmpegInstance.on('end', async() => {
-            ctx.response.body = await Deno.readFile(crabboCacheRoot+filename);
-        })
-        await crabboFfmpegInstance.videoBitrate(1200, true).save(crabboCacheRoot+filename);
+    if (await fileExist(crabboCacheRoot+filename) === false) {
+        logger.debug(`Crabbo with ${filename} is not cached yet. Creating it now!`)
+        const end = new Promise((resolve) => crabboFfmpegInstance.on('end', resolve));
+        crabboFfmpegInstance.videoBitrate(1050, true).videoFilters({
+            filterName: 'drawtext',
+            options: {
+                // vind een manier om fontfile werkend te krijgen
+                fontfile: 'comicsans.ttf',
+                text: ctx.params.uppertext,
+                fontsize: '60',
+                x: (856/2-30*ctx.params.uppertext.length/2),
+                y: 'H-240',
+                fontcolor: 'white',
+                shadowcolor: 'black',
+                shadowx: '2',
+                shadowy: '2'
+            }
+        }, {
+            filterName: 'drawtext',
+                options: {
+                    fontfile: 'comicsans.ttf',
+                    text: ctx.params.bottomtext,
+                    fontsize: '60',
+                    x: (856/2-30*ctx.params.bottomtext.length/2),
+                    y: 'H-170',
+                    fontcolor: 'white',
+                    shadowcolor: 'black',
+                    shadowx: '2',
+                    shadowy: '2'
+                }
+            }
+        ).save(crabboCacheRoot+filename);
+        await end;
+        logger.debug(`Finished rendering crabbo in: ${((Date.now() - begin) / 1000).toFixed(3)} seconds`);
+    } else {
+        logger.debug(`Crabbo with ${filename} is already cached!`)
     }
+    if (config.server.isProduction === false) ctx.response.headers.set('Content-Type', 'video/mp4');
     ctx.response.body = await Deno.readFile(crabboCacheRoot+filename);
+    logger.debug(`Finished sending crabbo in: ${((Date.now() - begin) / 1000).toFixed(3)} seconds`);
+    let total = 0;
+    for await (const file of Deno.readDir(crabboCacheRoot)) {
+        total += (await Deno.stat(crabboCacheRoot+file.name)).size / 1024 / 1024 / 1024;
+    }
+    if (await total >= 5) {
+        const start:number = Date.now();
+        for await (const file of Deno.readDir(crabboCacheRoot)) {
+            Deno.remove(crabboCacheRoot+file.name)
+        }
+        logger.debug(`Crabbo cache has been cleared in ${Date.now()-start}ms!`)
+    }
 });
 
 export default router;
