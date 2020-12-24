@@ -17,7 +17,9 @@
 
 // import oak app
 import { Application, Context } from "https://deno.land/x/oak@v6.4.0/mod.ts";
+import { bold, brightGreen, magenta } from "https://deno.land/std@0.82.0/fmt/colors.ts";
 import { tracker } from "./utils/tracker.ts";
+import { logger } from "./utils/logger.ts";
 import { ServerConfig } from "./utils/types.ts";
 
 // Read ServerConfig
@@ -44,4 +46,5 @@ app.use(customRouter.routes());
 app.use(customRouter.allowedMethods());
 
 //start server
+logger.info(`${magenta("Listening")}  ${bold("[")}${brightGreen(String(config.server.port))}${bold("]")}`);
 await app.listen({ port: config.server.port });
