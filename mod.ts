@@ -21,7 +21,7 @@ import { tracker } from "./utils/tracker.ts";
 import { ServerConfig } from "./utils/types.ts";
 
 // Read ServerConfig
-const config:ServerConfig = await JSON.parse(await Deno.readTextFile('./config.json'));
+const config: ServerConfig = await JSON.parse(await Deno.readTextFile("./config.json"));
 
 //import all routers
 import thatApiGuyRouter from "./routers/thatapiguy.ts";
@@ -30,10 +30,9 @@ import customRouter from "./routers/custom.ts";
 // create new app
 const app = new Application();
 
-
 // add tracker
-app.use(async (ctx:Context, next) => {
-    if (String(ctx.request.url).includes('favicon') === false) tracker(ctx);
+app.use(async (ctx: Context, next) => {
+    if (String(ctx.request.url).includes("favicon") === false) tracker(ctx);
     await next();
     return;
 });

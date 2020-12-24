@@ -15,19 +15,19 @@
  * 
  */
 
-export async function fileExist(filePath:string): Promise<boolean> {
+export async function fileExist(filePath: string): Promise<boolean> {
     try {
         await Deno.stat(filePath);
-    } catch(e) {
+    } catch (e) {
         return false;
     }
     return true;
 }
 
-export function fileExistSync(filePath:string): boolean {
+export function fileExistSync(filePath: string): boolean {
     try {
         Deno.statSync(filePath);
-    } catch(e) {
+    } catch (e) {
         return false;
     }
     return true;
