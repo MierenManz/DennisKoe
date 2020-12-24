@@ -25,6 +25,9 @@ import { logger } from "../utils/logger.ts";
 // Cache Directory for crabbo mp4's
 const crabboCacheRoot = `${Deno.cwd()}\\cache\\crabbovids\\`;
 
+// Make Cache Directory if it doesn't exist yet
+if (!await fileExist(crabboCacheRoot)) await Deno.mkdir(crabboCacheRoot);
+
 // FfmpegSettings
 const crabboSettings: FfmpegSettings = {
   ffmpegDir: "./ffmpeg/ffmpeg" + (Deno.build.os === "windows" ? ".exe" : ""),
