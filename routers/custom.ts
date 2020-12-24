@@ -99,7 +99,7 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
 router.get("/status", async (ctx: Context) => {
     const start: number = Date.now();
     const results = await getStatus();
-    let responseOBJ: StatusBody = {
+    const responseOBJ: StatusBody = {
         responseTime: Date.now() - start,
         operational: {
             quotesAPI: results[0],
@@ -112,11 +112,11 @@ router.get("/status", async (ctx: Context) => {
 });
 
 async function getStatus(): Promise<string[]> {
-    let result: string[] = [];
-    let urls: string[] = [
-        `https://api.thedogapi.com/v1/images/search?api_key=${API_KEYS.dogapi}`,
-        `https://api.thecatapi.com/v1/images/search?api_key=${API_KEYS.catapi}`,
-        "http://api.urbandictionary.com/v0/define?term=foobar",
+    const result: string[] = [];
+    const urls: string[] = [
+        `https://api.thedogapi.com/v1/images/search`,
+        `https://api.thecatapi.com/v1/images/search`,
+        "http://api.urbandictionary.com/v0/define?term=f",
     ];
     try {
         await fetch("https://quotes15.p.rapidapi.com/quotes/random/", {
@@ -126,12 +126,14 @@ async function getStatus(): Promise<string[]> {
             ],
         });
         result.push("<:online:612617210514374656> Operationeel");
-    } catch (e) {result.push("<:offline:612617210560512000> Offline");}
+        logger.debug("https://quotes15.p.rapidapi.com/quotes/random/ : Online")
+    } catch (e) {result.push("<:offline:612617210560512000> Offline");logger.debug("https://quotes15.p.rapidapi.com/quotes/random/ : Offline")}
     urls.forEach((path) => {
         try {
             fetch(path);
             result.push("<:online:612617210514374656> Operationeel");
-        } catch (e) {result.push("<:offline:612617210560512000> Offline");}
+            logger.debug(path + ": Online");
+        } catch (e) {result.push("<:offline:612617210560512000> Offline");logger.debug(path + ": Offline")}
     });
     return result;
 }
