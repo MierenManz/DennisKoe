@@ -1,1 +1,1 @@
-deno run --allow-read=config.json,keys.json,./assets/rickrolls.json --allow-net mod.ts
+deno run --allow-read --allow-net --allow-write mod.ts
