@@ -35,8 +35,6 @@ const crabboSettings:FfmpegSettings = {
 // Read ServerConfig
 const config: ServerConfig = await JSON.parse( await Deno.readTextFile('./config.json'));
 
-// VideoRender instance for crabbo
-const crabboFfmpegInstance = ffmpeg(crabboSettings);
 
 // Router
 const router = new Router({prefix: "/custom", methods: ["GET", "POST"]})
@@ -44,6 +42,7 @@ const router = new Router({prefix: "/custom", methods: ["GET", "POST"]})
 
 router.get('/crabbo/:uppertext/:bottomtext', async(ctx:CrabboContext) => {
     const begin: number = Date.now();
+    const crabboFfmpegInstance = ffmpeg(crabboSettings);
     ctx.response.status = 200;
     const filename = `${ctx.params.uppertext},${ctx.params.bottomtext}.mp4`;
     if (await fileExist(crabboCacheRoot+filename) === false) {
@@ -53,7 +52,7 @@ router.get('/crabbo/:uppertext/:bottomtext', async(ctx:CrabboContext) => {
             filterName: 'drawtext',
             options: {
                 // vind een manier om fontfile werkend te krijgen
-                fontfile: 'comicsans.ttf',
+                fontfile: `${Deno.cwd()}/assets/crabbo/comicsans.ttf`,
                 text: ctx.params.uppertext,
                 fontsize: '60',
                 x: (856/2-30*ctx.params.uppertext.length/2),
@@ -66,7 +65,8 @@ router.get('/crabbo/:uppertext/:bottomtext', async(ctx:CrabboContext) => {
         }, {
             filterName: 'drawtext',
                 options: {
-                    fontfile: 'comicsans.ttf',
+                    // vind een manier om fontfile werkend te krijgen
+                    fontfile: `${Deno.cwd()}/assets/crabbo/comicsans.ttf`,
                     text: ctx.params.bottomtext,
                     fontsize: '60',
                     x: (856/2-30*ctx.params.bottomtext.length/2),
