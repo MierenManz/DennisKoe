@@ -8,38 +8,55 @@
  *   #+#    #+#     
  *  #########   enniskoe
  * 
- *  custom.ts
+ *  ffmpeg.ts
  * 
  *  This file belongs to Denniskoe
  *  Dit bestand behoort tot Denniskoe
  * 
  */
 
-// import all types & classes
+// Imports
 import { Context, Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
 import ffmpeg from "https://deno.land/x/deno_ffmpeg@1.2.2/mod.ts";
-import { API_KEYS, CrabboContext, FfmpegSettings, ServerConfig, StatusBody } from "../utils/types.ts";
+import { config } from "../utils/common.ts";
 import { fileExist } from "../utils/filesystem.ts";
 import { logger } from "../utils/logger.ts";
+
+
+// Interfaces
+interface FfmpegSettings {
+    ffmpegDir?: string;
+    niceness?: number;
+    fatalError?: boolean;
+    source?: string;
+}
+interface CrabboContext extends Context {
+    params: {
+        uppertext: string;
+        bottomtext: string;
+    };
+}
+
 
 // Cache Directory for crabbo mp4's
 const crabboCacheRoot = `${Deno.cwd()}/cache/crabbovids/`;
 
+
 // Make Cache Directory if it doesn't exist yet
 if (!await fileExist(crabboCacheRoot)) await Deno.mkdir(crabboCacheRoot);
 
+
 // FfmpegSettings
 const crabboSettings: FfmpegSettings = {
-  ffmpegDir: (Deno.build.os === 'linux' ? "ffmpeg" : "./ffmpeg/ffmpeg"),
-  fatalError: true,
-  source: "./assets/crabbo/crab.mp4"
+    ffmpegDir: (Deno.build.os === 'linux' ? "ffmpeg" : "./ffmpeg/ffmpeg"),
+    fatalError: true,
+    source: "./assets/crabbo/crab.mp4"
 };
 
-// Read ServerConfig
-const config: ServerConfig = await JSON.parse(await Deno.readTextFile("./config.json"),);
 
 // Router
-const router = new Router({ prefix: "/custom", methods: ["GET"]});
+const router = new Router({ prefix: "/ffmpeg", methods: ["GET"]});
+
 
 router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
     const begin: number = Date.now();
@@ -99,45 +116,6 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
     }
 });
 
-router.get("/status", async (ctx: Context) => {
-    const start: number = Date.now();
-    const results = await getStatus();
-    const responseOBJ: StatusBody = {
-        responseTime: Date.now() - start,
-        operational: {
-            quotesAPI: results[0],
-            dogAPI: results[1],
-            catAPI: results[2],
-            urbanAPI: results[3],
-        },
-    };
-    ctx.response.body = responseOBJ;
-});
 
-async function getStatus(): Promise<string[]> {
-    const result: string[] = [];
-    const urls: string[] = [
-        `https://api.thedogapi.com/v1/images/search`,
-        `https://api.thecatapi.com/v1/images/search`,
-        "http://api.urbandictionary.com/v0/define?term=f",
-    ];
-    try {
-        await fetch("https://quotes15.p.rapidapi.com/quotes/random/", {
-            headers: [
-                ["x-rapidapi-host", "quotes15.p.rapidapi.com"],
-                ["x-rapidapi-key", API_KEYS.rapidapi]
-            ],
-        });
-        result.push("<:online:612617210514374656> Operationeel");
-        logger.debug("https://quotes15.p.rapidapi.com/quotes/random/ : Online")
-    } catch (e) {result.push("<:offline:612617210560512000> Offline");logger.debug("https://quotes15.p.rapidapi.com/quotes/random/ : Offline")}
-    urls.forEach((path) => {
-        try {
-            fetch(path);
-            result.push("<:online:612617210514374656> Operationeel");
-            logger.debug(path + ": Online");
-        } catch (e) {result.push("<:offline:612617210560512000> Offline");logger.debug(path + ": Offline")}
-    });
-    return result;
-}
+// Export router
 export default router;
