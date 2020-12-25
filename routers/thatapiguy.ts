@@ -15,12 +15,35 @@
  * 
  */
 
-// import all types & classes
-import { Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
-import { API_KEYS, TagBody, TagContext } from "../utils/types.ts";
+// Imports
+import { Context, Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
+import { API_KEYS } from "../utils/common.ts";
+
+
+// Interfaces
+interface Categories {
+    id?: number;
+    name?: string;
+}
+interface TagBody {
+    breeds: string[];
+    categories?: Categories[];
+    id: string;
+    url: string;
+    width: number;
+    height: number;
+}
+interface TagContext extends Context {
+    params: {
+        test: string;
+        id: string;
+    };
+}
+
 
 // create new router
 const router = new Router({ prefix: "/tag", methods: ["GET"] });
+
 
 // router for ThatApiGuy (TAG)
 router.get("/:id", async (ctx: TagContext) => {
@@ -32,5 +55,6 @@ router.get("/:id", async (ctx: TagContext) => {
     return;
 });
 
-// export router
+
+// Export router
 export default router;
