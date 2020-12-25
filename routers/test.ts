@@ -15,14 +15,18 @@
  * 
  */
 
-// import all types & classes
+// Imports
 import { Context, Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
 
+
 const router = new Router({ prefix: "/test", methods: ["GET"] });
+
 
 router.get("/ree", (ctx: Context) => {
     ctx.response.body = "Hello from testing!";
     return;
 });
 
+
+// Export router
 export default router;

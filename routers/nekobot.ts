@@ -15,8 +15,11 @@
  * 
  */
 
-// import all types & classes
+// Imports
 import { Context, Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
+
+
+// Interfaces
 interface NekoContext extends Context {
     params: {
         id: string;
@@ -30,4 +33,6 @@ router.get("/:id/:text", (ctx: NekoContext) => {
     return;
 });
 
+
+// Export router
 export default router;
