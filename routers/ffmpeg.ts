@@ -43,7 +43,7 @@ const crabboCacheRoot = `${Deno.cwd()}/cache/crabbovids/`;
 
 
 // Make Cache Directory if it doesn't exist yet
-if (!await fileExist(crabboCacheRoot)) await Deno.mkdir(crabboCacheRoot);
+if (await fileExist(crabboCacheRoot) === false) await Deno.mkdir(crabboCacheRoot);
 
 
 // FfmpegSettings
