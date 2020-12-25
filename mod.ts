@@ -51,6 +51,7 @@ app.use(nekobotRouter.allowedMethods());
 app.use(statusRouter.routes());
 app.use(statusRouter.allowedMethods());
 
+
 //start server
 logger.info(`${magenta("Listening")}  ${bold("[")}${brightGreen(String(config.server.port))}${bold("]")}`);
 await app.listen({ port: config.server.port });
