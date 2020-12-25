@@ -39,7 +39,7 @@ const crabboSettings: FfmpegSettings = {
 const config: ServerConfig = await JSON.parse(await Deno.readTextFile("./config.json"),);
 
 // Router
-const router = new Router({ prefix: "/custom", methods: ["GET", "POST"] });
+const router = new Router({ prefix: "/custom", methods: ["GET"]});
 
 router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
     const begin: number = Date.now();

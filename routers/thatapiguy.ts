@@ -20,7 +20,7 @@ import { Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
 import { API_KEYS, TagBody, TagContext } from "../utils/types.ts";
 
 // create new router
-const router = new Router({ prefix: "/tag" });
+const router = new Router({ prefix: "/tag", methods: ["GET"] });
 
 // router for ThatApiGuy (TAG)
 router.get("/:id", async (ctx: TagContext) => {
