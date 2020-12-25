@@ -15,6 +15,7 @@
  * 
  */
 
+
 export async function fileExist(filePath: string): Promise<boolean> {
     try {
         await Deno.stat(filePath);
@@ -23,6 +24,7 @@ export async function fileExist(filePath: string): Promise<boolean> {
     }
     return true;
 }
+
 
 export function fileExistSync(filePath: string): boolean {
     try {

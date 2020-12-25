@@ -55,7 +55,7 @@ const crabboSettings: FfmpegSettings = {
 
 
 // Router
-const router = new Router({ prefix: "/ffmpeg", methods: ["GET"]});
+const router = new Router({ prefix: "/ffmpeg", methods: ["GET"] });
 
 
 router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
@@ -100,7 +100,7 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
     } else {
         logger.debug(`Crabbo with ${filename} is already cached!`);
     }
-    if (config.server.isProduction === false) {ctx.response.headers.set("Content-Type", "video/mp4");}
+    if (config.server.isProduction === false) ctx.response.headers.set("Content-Type", "video/mp4");
     ctx.response.body = await Deno.readFile(crabboCacheRoot + filename);
     logger.debug(`Finished sending crabbo in: ${((Date.now() - begin) / 1000).toFixed(3)} seconds`);
     let total = 0;

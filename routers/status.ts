@@ -47,7 +47,7 @@ router.get("/ping", async (ctx: Context) => {
             dogAPI: results[1],
             catAPI: results[2],
             urbanAPI: results[3],
-        },
+        }
     };
     ctx.response.body = responseOBJ;
 });
@@ -68,13 +68,18 @@ async function getStatus(): Promise<string[]> {
         });
         result.push("<:online:612617210514374656> Operationeel");
         logger.debug("https://quotes15.p.rapidapi.com/quotes/random/ : Online")
-    } catch (e) {result.push("<:offline:612617210560512000> Offline");logger.debug("https://quotes15.p.rapidapi.com/quotes/random/ : Offline")}
+    } catch (e) {
+        result.push("<:offline:612617210560512000> Offline");logger.debug("https://quotes15.p.rapidapi.com/quotes/random/ : Offline");
+    }
     urls.forEach((path) => {
         try {
             fetch(path);
             result.push("<:online:612617210514374656> Operationeel");
             logger.debug(path + ": Online");
-        } catch (e) {result.push("<:offline:612617210560512000> Offline");logger.debug(path + ": Offline")}
+        } catch (e) {
+            result.push("<:offline:612617210560512000> Offline");
+            logger.debug(path + ": Offline")
+        }
     });
     return result;
 }
