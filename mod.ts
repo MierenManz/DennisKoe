@@ -28,7 +28,7 @@ const config: ServerConfig = await JSON.parse(await Deno.readTextFile("./config.
 //import all routers
 import thatApiGuyRouter from "./routers/thatapiguy.ts";
 import customRouter from "./routers/custom.ts";
-
+import nekobotRouter from  "./routers/nekobot.ts";
 // create new app
 const app = new Application();
 
@@ -44,7 +44,8 @@ app.use(thatApiGuyRouter.routes());
 app.use(thatApiGuyRouter.allowedMethods());
 app.use(customRouter.routes());
 app.use(customRouter.allowedMethods());
-
+app.use(nekobotRouter.routes());
+app.use(nekobotRouter.allowedMethods());
 //start server
 logger.info(`${magenta("Listening")}  ${bold("[")}${brightGreen(String(config.server.port))}${bold("]")}`);
 await app.listen({ port: config.server.port });
