@@ -25,9 +25,9 @@ import { config } from "./utils/common.ts";
 
 //import all routers
 import thatApiGuyRouter from "./routers/thatapiguy.ts";
-import customRouter from "./routers/custom.ts";
+import ffmpegRouter from "./routers/ffmpeg.ts";
 import nekobotRouter from  "./routers/nekobot.ts";
-
+import statusRouter from "./routers/status.ts";
 
 // create new app
 const app = new Application();
@@ -44,11 +44,12 @@ app.use(async (ctx: Context, next) => {
 //add all routers
 app.use(thatApiGuyRouter.routes());
 app.use(thatApiGuyRouter.allowedMethods());
-app.use(customRouter.routes());
-app.use(customRouter.allowedMethods());
+app.use(ffmpegRouter.routes());
+app.use(ffmpegRouter.allowedMethods());
 app.use(nekobotRouter.routes());
 app.use(nekobotRouter.allowedMethods());
-
+app.use(statusRouter.routes());
+app.use(statusRouter.allowedMethods());
 
 //start server
 logger.info(`${magenta("Listening")}  ${bold("[")}${brightGreen(String(config.server.port))}${bold("]")}`);
