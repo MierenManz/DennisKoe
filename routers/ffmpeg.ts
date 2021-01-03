@@ -48,7 +48,7 @@ if (await fileExist(crabboCacheRoot) === false) await Deno.mkdir(crabboCacheRoot
 
 // FfmpegSettings
 const crabboSettings: FfmpegSettings = {
-    ffmpegDir: (Deno.build.os === 'windows' ? "./ffmpeg/ffmpeg" : "ffmpeg"),
+    ffmpegDir: (Deno.build.os === 'windows' ? "./ffmpeg/ffmpeg.exe" : "ffmpeg"),
     fatalError: true,
     source: "./assets/crabbo/crab.mp4"
 };
