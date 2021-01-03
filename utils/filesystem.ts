@@ -16,9 +16,9 @@
  */
 
 
-export async function fileExist(filePath: string): Promise<boolean> {
+export async function fileExist(path: string): Promise<boolean> {
     try {
-        await Deno.stat(filePath);
+        await Deno.stat(path);
     } catch (e) {
         return false;
     }
@@ -26,9 +26,9 @@ export async function fileExist(filePath: string): Promise<boolean> {
 }
 
 
-export function fileExistSync(filePath: string): boolean {
+export function fileExistSync(path: string): boolean {
     try {
-        Deno.statSync(filePath);
+        Deno.statSync(path);
     } catch (e) {
         return false;
     }

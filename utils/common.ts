@@ -33,5 +33,5 @@ interface ApiKeys {
 }
 
 
-export const config: ServerConfig = await JSON.parse(await Deno.readTextFile("./config.json"));
+export const serverConfig: ServerConfig = await JSON.parse(await Deno.readTextFile("./config.json"));
 export const API_KEYS: ApiKeys = await JSON.parse(await Deno.readTextFile("./keys.json"));

@@ -15,12 +15,12 @@
  * 
  */
 
-// Import oak app
+// Imports
 import { Application, Context } from "https://deno.land/x/oak@v6.4.0/mod.ts";
 import { bold, brightGreen, magenta } from "https://deno.land/std@0.82.0/fmt/colors.ts";
 import { tracker } from "./utils/tracker.ts";
 import { logger } from "./utils/logger.ts";
-import { config } from "./utils/common.ts";
+import { serverConfig } from "./utils/common.ts";
 import { fileExist } from "./utils/filesystem.ts";
 
 
@@ -63,5 +63,5 @@ if (await fileExist(cache) === false) await Deno.mkdir(cache, {recursive:true});
 
 
 // Start server
-logger.info(`${magenta("Listening")}  ${bold("[")}${brightGreen(String(config.server.port))}${bold("]")}`);
-await app.listen({ port: config.server.port });
+logger.info(`${magenta("Listening")}  ${bold("[")}${brightGreen(String(serverConfig.server.port))}${bold("]")}`);
+await app.listen({ port: serverConfig.server.port });
