@@ -20,6 +20,7 @@ import { Context, Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
 import { API_KEYS } from "../utils/common.ts";
 import { logger } from "../utils/logger.ts";
 
+
 // Interfaces
 interface Operational {
     quotesAPI: string;
@@ -51,6 +52,7 @@ router.get("/ping", async (ctx: Context) => {
     };
     ctx.response.body = responseOBJ;
 });
+
 
 async function getStatus(): Promise<string[]> {
     const result: string[] = [];
