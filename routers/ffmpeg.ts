@@ -19,6 +19,7 @@
 import { Context, Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
 import ffmpeg from "https://deno.land/x/deno_ffmpeg@1.2.2/mod.ts";
 import { config } from "../utils/common.ts";
+import { clearCache } from "../utils/clearCache.ts";
 import { fileExist } from "../utils/filesystem.ts";
 import { logger } from "../utils/logger.ts";
 
@@ -39,16 +40,16 @@ interface CrabboContext extends Context {
 
 
 // Cache Directory for crabbo mp4's
-const crabboCacheRoot = `${Deno.cwd()}/cache/crabbovids/`;
+const crabboCacheRoot = `${Deno.cwd()}/cache/crabbovids`;
 
 
 // Make Cache Directory if it doesn't exist yet
-if (await fileExist(crabboCacheRoot) === false) await Deno.mkdir(crabboCacheRoot);
+if (await fileExist(crabboCacheRoot) === false) await Deno.mkdir(crabboCacheRoot, {recursive: true});
 
 
 // FfmpegSettings
 const crabboSettings: FfmpegSettings = {
-    ffmpegDir: (Deno.build.os === 'windows' ? "./ffmpeg/ffmpeg" : "ffmpeg"),
+    ffmpegDir: (Deno.build.os === 'windows' ? "./ffmpeg/ffmpeg.exe" : "ffmpeg"),
     fatalError: true,
     source: "./assets/crabbo/crab.mp4"
 };
@@ -103,17 +104,7 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
     if (config.server.isProduction === false) ctx.response.headers.set("Content-Type", "video/mp4");
     ctx.response.body = await Deno.readFile(crabboCacheRoot + filename);
     logger.debug(`Finished sending crabbo in: ${((Date.now() - begin) / 1000).toFixed(3)} seconds`);
-    let total = 0;
-    for await (const file of Deno.readDir(crabboCacheRoot)) {
-        total += (await Deno.stat(crabboCacheRoot + file.name)).size / 1024 / 1024 / 1024;
-    }
-    if (total >= 5) {
-        const start: number = Date.now();
-        for await (const file of Deno.readDir(crabboCacheRoot)) {
-            Deno.remove(crabboCacheRoot + file.name);
-        }
-        logger.debug(`Crabbo cache has been cleared in ${Date.now() - start}ms!`);
-    }
+    logger.debug( await clearCache(crabboCacheRoot, 5));
 });
 
 

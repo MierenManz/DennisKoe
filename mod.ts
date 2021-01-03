@@ -23,11 +23,13 @@ import { logger } from "./utils/logger.ts";
 import { config } from "./utils/common.ts";
 import { fileExist } from "./utils/filesystem.ts";
 
+
 // Import all routers
 import thatApiGuyRouter from "./routers/thatapiguy.ts";
 import ffmpegRouter from "./routers/ffmpeg.ts";
 import nekobotRouter from  "./routers/nekobot.ts";
 import statusRouter from "./routers/status.ts";
+
 
 // Create new app
 const app = new Application();
@@ -55,8 +57,9 @@ app.use(statusRouter.allowedMethods());
 // Cache Directory
 const cache = `${Deno.cwd()}/cache/`;
 
+
 // Make cache dir if it doesn't exist
-if (await fileExist(cache) === false) await Deno.mkdir(cache);
+if (await fileExist(cache) === false) await Deno.mkdir(cache, {recursive:true});
 
 
 // Start server
