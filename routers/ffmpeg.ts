@@ -103,7 +103,7 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
     ctx.response.headers.set("Content-Type", "video/mp4");
     ctx.response.body = await Deno.readFile(crabboCacheRoot + filename);
     logger.debug(`Finished sending crabbo in: ${((Date.now() - begin) / 1000).toFixed(3)} seconds`);
-    logger.debug( await clearCache(crabboCacheRoot, 5));
+    logger.debug( await clearCache(crabboCacheRoot, "crabbo", 5));
 });
 
 
