@@ -96,12 +96,12 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
             },
         }).save(crabboCacheRoot + filename);
         await end;
-        logger.debug(`Finished rendering crabbo in: ${((Date.now() - begin) / 1000).toFixed(3)} seconds`);
+        logger.debug(`Finished rendering crabbo in: ${(Date.now() - begin)} ms`);
     } else {
         logger.debug(`Crabbo with ${filename} is already cached!`);
     }
     ctx.response.body = await Deno.readFile(crabboCacheRoot + filename);
-    logger.debug(`Finished sending crabbo in: ${((Date.now() - begin) / 1000).toFixed(3)} seconds`);
+    logger.debug(`Finished sending crabbo in: ${(Date.now() - begin)} ms`);
     logger.debug(await clearCache(crabboCacheRoot, "crabbo", 5));
 });
 
