@@ -10,6 +10,6 @@ export async function clearCache(cacheDir: string, cacheName: string, maxSize: n
         }
         return `${cacheName} cache has been cleared in ${Date.now() - start}ms!`;
     } else {
-        return cacheName + " cache is not full yet " + currentSize / maxSize * 100;
+        return cacheName + " cache is not full yet " + (currentSize / maxSize * 100).toFixed(3) + "%";
     }
 }
