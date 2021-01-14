@@ -39,7 +39,7 @@ interface CrabboContext extends Context {
 
 
 // Cache Directory for crabbo mp4's
-const crabboCacheRoot = `${Deno.cwd()}/cache/crabbovids`;
+const crabboCacheRoot = `${Deno.cwd()}/cache/crabbovids/`;
 
 
 // Make Cache Directory if it doesn't exist yet
