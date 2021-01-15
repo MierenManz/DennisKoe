@@ -16,7 +16,7 @@
  */
 
 // Imports
-import { Context, Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
+import { Context, Router } from "../deps.ts";
 import { API_KEYS } from "../utils/common.ts";
 import { logger } from "../utils/logger.ts";
 

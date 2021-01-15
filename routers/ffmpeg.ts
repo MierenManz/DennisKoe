@@ -16,19 +16,16 @@
  */
 
 // Imports
-import { Context, Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
-import ffmpeg from "https://deno.land/x/deno_ffmpeg@1.2.2/mod.ts";
-import { clearCache } from "../utils/clearCache.ts";
+import { Context, Router, ffmpeg, send } from "../deps.ts";
+import { clearCache } from "../utils/clearcache.ts";
 import { fileExist } from "../utils/filesystem.ts";
 import { logger } from "../utils/logger.ts";
 
 
 // Interfaces
 interface FfmpegSettings {
-    ffmpegDir?: string;
-    niceness?: number;
-    fatalError?: boolean;
-    source?: string;
+    ffmpegDir: string;
+    input: string
 }
 interface CrabboContext extends Context {
     params: {
@@ -48,9 +45,8 @@ if (await fileExist(crabboCacheRoot) === false) await Deno.mkdir(crabboCacheRoot
 
 // FfmpegSettings
 const crabboSettings: FfmpegSettings = {
-    ffmpegDir: (Deno.build.os === 'windows' ? `${Deno.cwd()}/ffmpeg/ffmpeg.exe` : "ffmpeg"),
-    fatalError: true,
-    source: "./assets/crabbo/crab.mp4"
+    ffmpegDir: (Deno.build.os === 'windows') ? `${Deno.cwd()}/ffmpeg/ffmpeg.exe` : "ffmpeg",
+    input: "./assets/crabbo/crab.mp4"
 };
 
 
@@ -65,12 +61,10 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
     const filename = `${ctx.params.uppertext},${ctx.params.bottomtext}.mp4`;
     if (await fileExist(crabboCacheRoot + filename) === false) {
         logger.debug(`Crabbo with ${filename} is not cached yet. Creating it now!`);
-        const end = new Promise((resolve) => crabboFfmpegInstance.on("end", resolve));
-        crabboFfmpegInstance.videoBitrate(1050, true).videoFilters({
+        await crabboFfmpegInstance.videoBitrate(1050, true).videoFilters({
             filterName: "drawtext",
             options: {
-                // vind een manier om fontfile werkend te krijgen
-                fontfile: `${Deno.cwd()}/assets/crabbo/comicsans.ttf`,
+                fontfile: `./assets/crabbo/comicsans.ttf`,
                 text: ctx.params.uppertext,
                 fontsize: "60",
                 x: (856 / 2 - 30 * ctx.params.uppertext.length / 2),
@@ -83,8 +77,7 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
             }, {
             filterName: "drawtext",
             options: {
-                // vind een manier om fontfile werkend te krijgen
-                fontfile: `${Deno.cwd()}/assets/crabbo/comicsans.ttf`,
+                fontfile: `./assets/crabbo/comicsans.ttf`,
                 text: ctx.params.bottomtext,
                 fontsize: "60",
                 x: (856 / 2 - 30 * ctx.params.bottomtext.length / 2),
@@ -95,7 +88,6 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
                 shadowy: "2",
             },
         }).save(crabboCacheRoot + filename);
-        await end;
         logger.debug(`Finished rendering crabbo in: ${(Date.now() - begin)} ms`);
     } else {
         logger.debug(`Crabbo with ${filename} is already cached!`);

@@ -14,8 +14,7 @@
  *  Dit bestand behoort tot Denniskoe
  * 
  */
-import { Context } from "https://deno.land/x/oak@v6.4.0/context.ts";
-import { bold, brightBlue, brightGreen, magenta, red } from "https://deno.land/std@0.82.0/fmt/colors.ts";
+import { Context, bold, brightBlue, brightGreen, magenta, red } from "../deps.ts";
 import { logger } from "./logger.ts";
 
 

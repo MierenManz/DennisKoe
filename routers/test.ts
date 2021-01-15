@@ -16,7 +16,7 @@
  */
 
 // Imports
-import { Context, Router } from "https://deno.land/x/oak@v6.4.0/mod.ts";
+import { Context, Router } from "../deps.ts";
 
 
 const router = new Router({ prefix: "/test", methods: ["GET"] });

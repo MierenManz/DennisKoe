@@ -16,8 +16,7 @@
  */
 
 // Imports
-import { Application, Context } from "https://deno.land/x/oak@v6.4.0/mod.ts";
-import { bold, brightGreen, magenta } from "https://deno.land/std@0.82.0/fmt/colors.ts";
+import { Application, Context, bold, brightGreen, magenta } from "./deps.ts";
 import { tracker } from "./utils/tracker.ts";
 import { logger } from "./utils/logger.ts";
 import { serverConfig } from "./utils/common.ts";
@@ -37,7 +36,7 @@ const app = new Application();
 
 // Add tracker
 app.use(async (ctx: Context, next) => {
-    if (String(ctx.request.url).includes("favicon") === false) tracker(ctx);
+    if (!String(ctx.request.url).includes("favicon")) tracker(ctx);
     await next();
     return;
 });
