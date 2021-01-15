@@ -16,7 +16,7 @@
  */
 
 // Imports
-import { Context, Router, ffmpeg, send } from "../deps.ts";
+import { Context, Router, ffmpeg } from "../deps.ts";
 import { clearCache } from "../utils/clearcache.ts";
 import { fileExist } from "../utils/filesystem.ts";
 import { logger } from "../utils/logger.ts";
