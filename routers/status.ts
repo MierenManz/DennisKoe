@@ -34,15 +34,19 @@ interface StatusBody {
 }
 
 
+//
+const STARTUP = new Date();
+
+
 // Router
 const router = new Router({ prefix: "/status", methods: ["GET"] });
 
 
 router.get("/ping", async (ctx: Context) => {
-    const start: number = Date.now();
+    const requestStart: number = Date.now();
     const results = await getStatus();
     const responseOBJ: StatusBody = {
-        responseTime: Date.now() - start,
+        responseTime: Date.now() - requestStart,
         operational: {
             quotesAPI: results[0],
             dogAPI: results[1],
@@ -51,6 +55,15 @@ router.get("/ping", async (ctx: Context) => {
         }
     };
     ctx.response.body = responseOBJ;
+});
+
+
+router.get("/uptime", (ctx: Context) => {
+    const obj = {
+        uptime: ((Date.now() - STARTUP.getTime()) / 1000).toFixed(0),
+        onlineSince: STARTUP
+    }
+    ctx.response.body = obj;
 });
 
 
