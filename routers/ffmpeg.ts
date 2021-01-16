@@ -33,20 +33,33 @@ interface CrabboContext extends Context {
         bottomtext: string;
     };
 }
-
+interface ImposterContext extends Context {
+    params: {
+        name: string;
+    };
+}
 
 // Cache Directory for crabbo mp4's
 const crabboCacheRoot = `${Deno.cwd()}/cache/crabbovids/`;
+const imposterCacheRoot = `${Deno.cwd()}/cache/impostervids/`;
 
 
 // Make Cache Directory if it doesn't exist yet
-if (await fileExist(crabboCacheRoot) === false) await Deno.mkdir(crabboCacheRoot, {recursive: true});
+if (!await fileExist(crabboCacheRoot)) await Deno.mkdir(crabboCacheRoot, {recursive: true});
+if (!await fileExist(imposterCacheRoot)) await Deno.mkdir(imposterCacheRoot, {recursive: true});
 
 
-// FfmpegSettings
+// Crabbo settings
 const crabboSettings: FfmpegSettings = {
     ffmpegDir: (Deno.build.os === 'windows') ? `${Deno.cwd()}/ffmpeg/ffmpeg.exe` : "ffmpeg",
     input: "./assets/crabbo/crab.mp4"
+};
+
+
+// Imposter settings
+const imposterSettings: FfmpegSettings = {
+    ffmpegDir: (Deno.build.os === 'windows') ? `${Deno.cwd()}/ffmpeg/ffmpeg.exe` : "ffmpeg",
+    input: "./assets/imposter/video.mp4"
 };
 
 
@@ -95,6 +108,45 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
     ctx.response.body = await Deno.readFile(crabboCacheRoot + filename);
     logger.debug(`Finished sending crabbo in: ${(Date.now() - begin)} ms`);
     logger.debug(await clearCache(crabboCacheRoot, "crabbo", 5));
+});
+
+
+router.get("/imposter/:name", async (ctx: ImposterContext) => {
+    console.log(ctx.request.headers);
+    const begin: number = Date.now();
+    const imposterFfmpegInstance = ffmpeg(imposterSettings);
+    ctx.response.status = 200;
+    const filename = `${ctx.params.name}.mp4`;
+    if (await fileExist(crabboCacheRoot + filename) === false) {
+        logger.debug(`imposter with ${filename} is not cached yet. Creating it now!`);
+        await imposterFfmpegInstance.videoBitrate(1050, true).videoFilters({
+            filterName: "drawtext",
+            options: {
+                fontfile: `./assets/crabbo/comicsans.ttf`,
+                text: ctx.params.name,
+                fontsize: "60",
+                x: (640 / 2 - 30 * ctx.params.name.length / 2),
+                y: "H-120",
+                fontcolor: "white",
+                shadowcolor: "black",
+                shadowx: "2",
+                shadowy: "2",
+            }
+        }).videoFilters({
+            filterName: "fade",
+            options: {
+                t: "in",
+                s: 0,
+                n: 20
+            }
+        }).save(imposterCacheRoot + filename);
+        logger.debug(`Finished rendering crabbo in: ${(Date.now() - begin)} ms`);
+    } else {
+        logger.debug(`Imposter with ${filename} is already cached!`);
+    }
+    ctx.response.body = await Deno.readFile(imposterCacheRoot + filename);
+    logger.debug(`Finished sending imposter in: ${(Date.now() - begin)} ms`);
+    logger.debug(await clearCache(imposterCacheRoot, "imposter", 5));
 });
 
 
