@@ -3,6 +3,7 @@ export async function clearCache(cacheDir: string, cacheName: string, maxSize: n
     for await (const file of Deno.readDir(cacheDir)) {
         currentSize += (await Deno.stat(cacheDir + file.name)).size / 1024^3;
     }
+    console.log(currentSize);
     if (currentSize >= maxSize) {
         const start: number = Date.now();
         for await (const file of Deno.readDir(cacheDir)) {

@@ -1,19 +1,3 @@
-/*
- * 
- *        :::::::::  
- *       :+:    :+:  
- *      +:+    +:+  
- *     +#+    +:+   
- *    +#+    +#+    
- *   #+#    #+#     
- *  #########   enniskoe
- * 
- *  tracker.ts
- * 
- *  This file belongs to Denniskoe
- *  Dit bestand behoort tot Denniskoe
- * 
- */
 import { Context, bold, brightBlue, brightGreen, magenta, red } from "../deps.ts";
 import { logger } from "./logger.ts";
 

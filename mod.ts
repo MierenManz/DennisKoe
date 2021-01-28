@@ -1,20 +1,3 @@
-/*
- * 
- *        :::::::::  
- *       :+:    :+:  
- *      +:+    +:+  
- *     +#+    +:+   
- *    +#+    +#+    
- *   #+#    #+#     
- *  #########   enniskoe
- * 
- *  mod.ts
- * 
- *  This file belongs to Denniskoe
- *  Dit bestand behoort tot Denniskoe
- * 
- */
-
 // Imports
 import { Application, Context, bold, brightGreen, magenta } from "./deps.ts";
 import { tracker } from "./utils/tracker.ts";
@@ -36,7 +19,7 @@ const app = new Application();
 
 // Add tracker
 app.use(async (ctx: Context, next) => {
-    if (!String(ctx.request.url).includes("favicon")) tracker(ctx);
+    if (!(ctx.request.url).toString().includes("favicon")) tracker(ctx);
     await next();
     return;
 });

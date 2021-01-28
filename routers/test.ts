@@ -1,20 +1,3 @@
-/*
- * 
- *        :::::::::  
- *       :+:    :+:  
- *      +:+    +:+  
- *     +#+    +:+   
- *    +#+    +#+    
- *   #+#    #+#     
- *  #########   enniskoe
- * 
- *  test.ts
- * 
- *  This file belongs to Denniskoe
- *  Dit bestand behoort tot Denniskoe
- * 
- */
-
 // Imports
 import { Context, Router } from "../deps.ts";
 

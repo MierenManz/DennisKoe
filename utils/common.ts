@@ -1,21 +1,3 @@
-/*
- * 
- *        :::::::::  
- *       :+:    :+:  
- *      +:+    +:+  
- *     +#+    +:+   
- *    +#+    +#+    
- *   #+#    #+#     
- *  #########   enniskoe
- * 
- *  types.ts
- * 
- *  This file belongs to Denniskoe
- *  Dit bestand behoort tot Denniskoe
- * 
- */
-
-
 //Config Interface for config.json
 interface ServerConfig {
     server: {

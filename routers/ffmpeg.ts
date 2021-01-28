@@ -1,20 +1,3 @@
-/*
- * 
- *        :::::::::  
- *       :+:    :+:  
- *      +:+    +:+  
- *     +#+    +:+   
- *    +#+    +#+    
- *   #+#    #+#     
- *  #########   enniskoe
- * 
- *  ffmpeg.ts
- * 
- *  This file belongs to Denniskoe
- *  Dit bestand behoort tot Denniskoe
- * 
- */
-
 // Imports
 import { Context, Router, ffmpeg } from "../deps.ts";
 import { clearCache } from "../utils/clearcache.ts";
@@ -40,25 +23,23 @@ interface ImposterContext extends Context {
 }
 
 // Cache Directory for crabbo mp4's
-const crabboCacheRoot = `${Deno.cwd()}/cache/crabbovids/`;
-const imposterCacheRoot = `${Deno.cwd()}/cache/impostervids/`;
-
+const crabboCacheRoot = `./cache/crabbovids/`;
+const imposterCacheRoot = `./cache/impostervids/`;
 
 // Make Cache Directory if it doesn't exist yet
 if (!await fileExist(crabboCacheRoot)) await Deno.mkdir(crabboCacheRoot, {recursive: true});
 if (!await fileExist(imposterCacheRoot)) await Deno.mkdir(imposterCacheRoot, {recursive: true});
 
-
 // Crabbo settings
 const crabboSettings: FfmpegSettings = {
-    ffmpegDir: (Deno.build.os === 'windows') ? `${Deno.cwd()}/ffmpeg/ffmpeg.exe` : "ffmpeg",
+    ffmpegDir: (Deno.build.os === 'windows') ? `./ffmpeg/ffmpeg.exe` : "ffmpeg",
     input: "./assets/crabbo/crab.mp4"
 };
 
 
 // Imposter settings
 const imposterSettings: FfmpegSettings = {
-    ffmpegDir: (Deno.build.os === 'windows') ? `${Deno.cwd()}/ffmpeg/ffmpeg.exe` : "ffmpeg",
+    ffmpegDir: (Deno.build.os === 'windows') ? `./ffmpeg/ffmpeg.exe` : "ffmpeg",
     input: "./assets/imposter/video.mp4"
 };
 
@@ -86,8 +67,8 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
                 shadowcolor: "black",
                 shadowx: "2",
                 shadowy: "2",
-            },
-            }, {
+            }
+        }, {
             filterName: "drawtext",
             options: {
                 fontfile: `./assets/crabbo/comicsans.ttf`,
@@ -99,7 +80,7 @@ router.get("/crabbo/:uppertext/:bottomtext", async (ctx: CrabboContext) => {
                 shadowcolor: "black",
                 shadowx: "2",
                 shadowy: "2",
-            },
+            }
         }).save(crabboCacheRoot + filename);
         logger.debug(`Finished rendering crabbo in: ${(Date.now() - begin)} ms`);
     } else {
@@ -117,7 +98,7 @@ router.get("/imposter/:name", async (ctx: ImposterContext) => {
     const imposterFfmpegInstance = ffmpeg(imposterSettings);
     ctx.response.status = 200;
     const filename = `${ctx.params.name}.mp4`;
-    if (await fileExist(crabboCacheRoot + filename) === false) {
+    if (!await fileExist(crabboCacheRoot + filename)) {
         logger.debug(`imposter with ${filename} is not cached yet. Creating it now!`);
         await imposterFfmpegInstance.videoBitrate(1050, true).videoFilters({
             filterName: "drawtext",
@@ -132,15 +113,8 @@ router.get("/imposter/:name", async (ctx: ImposterContext) => {
                 shadowx: "2",
                 shadowy: "2",
             }
-        }).videoFilters({
-            filterName: "fade",
-            options: {
-                t: "in",
-                s: 0,
-                n: 20
-            }
         }).save(imposterCacheRoot + filename);
-        logger.debug(`Finished rendering crabbo in: ${(Date.now() - begin)} ms`);
+        logger.debug(`Finished rendering Imposter in: ${(Date.now() - begin)} ms`);
     } else {
         logger.debug(`Imposter with ${filename} is already cached!`);
     }
