@@ -13,7 +13,7 @@ export class Cache<V> {
     return r ? Ok(r) : Err("Value was not found");
   }
 
-  public set(key: string, value: V): Result<undefined, string> {
+  public set(key: string, value: V): Result<void, string> {
     if (this.#cache.size === this.#limit) {
       this.#cache.delete(this.#cache.keys().next().value);
     }
