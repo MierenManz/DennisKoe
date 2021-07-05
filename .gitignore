@@ -1,5 +1,7 @@
-node_modules
-dist
-.idea
-ffmpeg
-cache
+/node_modules
+/dist
+/.idea
+/ffmpeg
+/cache
+/keys.json
+/logs
