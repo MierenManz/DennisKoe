@@ -22,15 +22,6 @@ interface ServerConfig {
   };
 }
 
-// Config Interface for keys.json
-interface ApiKeys {
-  rapidapi: string;
-}
-
 export const serverConfig: ServerConfig = await JSON.parse(
   await Deno.readTextFile("./config.json"),
-);
-
-export const API_KEYS: ApiKeys = await JSON.parse(
-  await Deno.readTextFile("./keys.json"),
 );
