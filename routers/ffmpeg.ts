@@ -45,11 +45,9 @@ router.get("/crabbo/:uppertext/:lowertext", async (ctx: CrabboContext) => {
   const key = `${uppertext}||${lowertext}`;
   let vid: Uint8Array;
   if (crabboCache.has(key)) {
-    console.log("CACHEDDDDD");
     vid = crabboCache.get(key).unwrap();
     logger.debug(`Crabbo with ${key} is already cached!`);
   } else {
-    console.log("UNCACHED!");
     logger.debug(`Crabbo with ${key} wasn't found in cache`);
     const ffmpegInstance = ffmpeg(crabboSettings);
 

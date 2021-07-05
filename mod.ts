@@ -34,6 +34,7 @@ app.use(ffmpegRouter.allowedMethods());
 app.use(statusRouter.routes());
 app.use(statusRouter.allowedMethods());
 app.addEventListener("error", function (ctx) {
+  // Todo (Sky) make this work with logger.
   console.log(ctx);
 });
 // Start server
