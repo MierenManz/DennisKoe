@@ -1,5 +1,17 @@
 {
-    "server": {
-        "port": 6969
+  "serverPort": 6969,
+  "ffmpeg": {
+    "videos": {
+      "crabbo": {
+        "cacheLimit": 50,
+        "video": "./assets/crabbo/video.mp4",
+        "font": "./assets/crabbo/font.ttf"
+      }
     }
+  },
+  "logger": {
+    "directory": "./logs/",
+    "disableColors": false,
+    "showDebug": true
+  }
 }
