@@ -1,6 +1,5 @@
 import { serverConfig } from "./config_files.ts";
 type LogLevels = "Warn" | "Debug" | "Log" | "Error" | "Info";
-type DebugLevel = 0 | 1 | 2;
 
 interface LoggingData {
   file: string;

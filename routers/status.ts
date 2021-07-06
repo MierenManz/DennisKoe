@@ -41,23 +41,17 @@ router.get("/uptime", function (ctx) {
 });
 
 async function getStatus(): Promise<string[]> {
-  const result: string[] = [];
   const urls: string[] = [
     "https://api.thedogapi.com/v1/images/search",
     "https://api.thecatapi.com/v1/images/search",
-    "http://api.urbandictionary.com/v0/define",
+    // Need to find shorter response body to test for ping
+    "https://api.urbandictionary.com/v0/define?term=olla%20kalla",
   ];
-
-  for (const index of urls) {
-    let succes = true;
-    try {
-      await fetch(urls[parseInt(index)]);
-    } catch {
-      succes = false;
-    }
-
-    result[parseInt(index)] = succes ? "online" : "offline";
-  }
+  const promiseMap = urls.map((x) => fetch(x));
+  const result: string[] = await Promise.all(promiseMap)
+    .then((x) => {
+      return x.map((y) => y.ok ? "online" : "offline");
+    });
 
   return result;
 }
