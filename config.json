@@ -1,6 +1,7 @@
 {
   "serverPort": 6969,
   "ffmpeg": {
+    "binary": "ffmpeg",
     "videos": {
       "crabbo": {
         "cacheLimit": 50,

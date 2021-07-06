@@ -2,6 +2,7 @@
 interface ServerConfig {
   serverPort: number;
   ffmpeg: {
+    binary: string;
     videos: {
       crabbo: {
         cacheLimit: number;

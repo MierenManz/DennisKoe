@@ -19,8 +19,8 @@ interface CrabboContext extends Context {
 
 // Crabbo settings
 const crabboSettings: FfmpegSettings = {
-  ffmpegDir: (Deno.build.os === "windows") ? `./ffmpeg/ffmpeg.exe` : "ffmpeg",
-  input: "./assets/crabbo/video.mp4",
+  ffmpegDir: serverConfig.ffmpeg.binary,
+  input: serverConfig.ffmpeg.videos.crabbo.video,
 };
 
 const crabboCache = new Cache<Uint8Array>(
@@ -28,7 +28,7 @@ const crabboCache = new Cache<Uint8Array>(
 );
 
 const crabboDefaultFilters = {
-  fontfile: `./assets/crabbo/font.ttf`,
+  fontfile: serverConfig.ffmpeg.videos.crabbo.font,
   fontsize: "60",
   fontcolor: "white",
   shadowcolor: "black",
